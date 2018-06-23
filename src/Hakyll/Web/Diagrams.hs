@@ -27,14 +27,14 @@ buildMarkdown :: Rules ()
 buildMarkdown = do
     match "*.md" $ do
       route idRoute
-      compile $ pandocCompilerDiagrams
+      compile $ pandocCompilerDiagrams "images"
 
 -- | Read a page render using pandoc
-pandocCompilerDiagrams :: Compiler (Item String)
-pandocCompilerDiagrams = pandocCompilerDiagramsWith defaultHakyllReaderOptions defaultHakyllWriterOptions
+pandocCompilerDiagrams :: FilePath -> Compiler (Item String)
+pandocCompilerDiagrams outDir = pandocCompilerDiagramsWith outDir defaultHakyllReaderOptions defaultHakyllWriterOptions
 
-pandocCompilerDiagramsWith :: ReaderOptions -> WriterOptions -> Compiler (Item String)
-pandocCompilerDiagramsWith ropt wopt = pandocCompilerWithTransformM ropt wopt (diagramsTransformer "images")
+pandocCompilerDiagramsWith :: FilePath -> ReaderOptions -> WriterOptions -> Compiler (Item String)
+pandocCompilerDiagramsWith outDir ropt wopt = pandocCompilerWithTransformM ropt wopt (diagramsTransformer outDir)
 
 diagramsTransformer :: FilePath -> Pandoc -> Compiler Pandoc
 diagramsTransformer outDir pandoc = unsafeCompiler $ renderBlockDiagrams outDir pandoc
@@ -46,4 +46,11 @@ diagramsTransformer outDir pandoc = unsafeCompiler $ renderBlockDiagrams outDir 
 --   from the output) and provided as additional definitions that will
 --   be in scope during evaluation of all @diagrams@ blocks.
 renderBlockDiagrams :: FilePath -> Pandoc -> IO Pandoc
-renderBlockDiagrams outDir p = bottomUpM (insertDiagrams $ Opts outDir "example") p
+renderBlockDiagrams outDir p = do
+    let f :: Block -> IO [Block]
+        f = insertDiagrams $ Opts "png" outDir "example" True 
+
+        g :: IO [Block] -> IO Block
+        g mbs = mbs >>= return . (Div nullAttr)
+
+    bottomUpM (g . f) p

@@ -1,6 +1,8 @@
+resolver: lts-8.0
 flags: {}
 packages:
-- '.'
-- ../diagrams-pandoc
+    - '.'
 extra-deps:
-resolver: lts-3.2
+    - git: https://github.com/silky/diagrams-pandoc.git
+      commit: dcbd85a6b8a5f75c97fca23dd848d9f32175cf9b
+

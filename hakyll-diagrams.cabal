@@ -20,19 +20,19 @@ source-repository head
 
 library
     build-depends:
-        base >=4.3 && <4.9,
-        containers -any,
-        filepath -any,
-        directory -any,
-        hakyll >=4.6 && <4.8,
-        diagrams-lib >=1.2 && <1.4,
-        diagrams-rasterific >=0.1 && <1.4,
-        JuicyPixels >=3.2 && <3.3,
-        diagrams-builder >=0.4 && <0.8,
-        pandoc >=1.13 && <1.16,
-        safe ==0.3.*,
-        parsec >=3 && <3.2,
-        diagrams-pandoc -any
+        base >=4.3&& <4.10,
+        containers,
+        filepath,
+        directory,
+        hakyll,
+        diagrams-lib,
+        diagrams-rasterific,
+        JuicyPixels,
+        diagrams-builder,
+        pandoc,
+        safe,
+        parsec,
+        diagrams-pandoc
     exposed-modules:
         Hakyll.Web.Diagrams
     exposed: True
