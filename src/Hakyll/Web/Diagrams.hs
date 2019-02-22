@@ -47,10 +47,7 @@ diagramsTransformer outDir pandoc = unsafeCompiler $ renderBlockDiagrams outDir 
 --   be in scope during evaluation of all @diagrams@ blocks.
 renderBlockDiagrams :: FilePath -> Pandoc -> IO Pandoc
 renderBlockDiagrams outDir p = do
-    let f :: Block -> IO [Block]
+    let f :: Block -> IO Block
         f = insertDiagrams $ Opts "png" outDir "example" True 
 
-        g :: IO [Block] -> IO Block
-        g mbs = mbs >>= return . (Div nullAttr)
-
-    bottomUpM (g . f) p
+    bottomUpM f p

@@ -4,5 +4,5 @@ packages:
     - '.'
 extra-deps:
     - git: https://github.com/silky/diagrams-pandoc.git
-      commit: dcbd85a6b8a5f75c97fca23dd848d9f32175cf9b
+      commit: 8bbf3811f9353e119df64f739ccfa5a1e7edfb2a
 
